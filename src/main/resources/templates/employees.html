@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>INdex</title>
+
+</head>
+<script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src = "app.js"></script>
+<body>
+    <div ng-controller="EmployeeCRUDCtrl">
+        <table>
+            <tr>
+                <td width="100">ID:</td>
+                <td><input type="text" id="id" ng-model="employee.id" /></td>
+            </tr>
+            <tr>
+                <td width="100">Name:</td>
+                <td><input type="text" id="name" ng-model="employee.name" /></td>
+            </tr>
+            <tr>
+                <td width="100">Surname:</td>
+                <td><input type="text" id="age" ng-model="employee.surname" /></td>
+            </tr>
+        </table>
+        <a ng-click="getEmployee(employee.id)">Get Employee</a>
+        <a ng-click="updateEmployee(employee.id,employee.name,employee.email)">Update Employee</a>
+        <a ng-click="addEmployee(employee.name,employee.email)">Add Employee</a>
+        <a ng-click="deleteEmployee(employee.id)">Delete Employee</a>
+        <a ng-click="getAllEmployee()">Get all Employees</a><br/><br/>
+        <p style="color:green">{{message}}</p>
+        <p style="color:red">{{errorMessage}}</p>
+        <br/><br/>
+        <div ng-repeat="usr in users">
+            {{employee.name}} {{employee.surname}}
+        </div>
+    </div>
+</body>
+</html>
