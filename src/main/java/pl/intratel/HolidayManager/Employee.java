@@ -5,22 +5,34 @@ import org.hibernate.annotations.GeneratorType;
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
+@Entity(name="employee")
+@Table(name="employee")
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id",updatable=false,nullable=false)
     private long id;
 
     private String name;
     private String surname;
     private String email;
-    private boolean manager;
+    private short manager_status;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    public Employee(){}
+
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "employee_expertise",joinColumns = @JoinColumn(name="employee_id",referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "expertise_id", referencedColumnName = "id"))
     private Set<Expertise> expertises;
+
+    @OneToMany(mappedBy = "employee")
+    private Set<Overtime> overtime;
+
+    @OneToMany(mappedBy = "employee")
+    private Set<UsedOvertime> usedOvertime;
+
+    @OneToMany(mappedBy = "employee")
+    private Set<Holiday> holiday;
 
     public long getId() {
         return id;

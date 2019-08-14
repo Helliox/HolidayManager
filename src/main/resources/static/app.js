@@ -5,7 +5,6 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
     function ($scope, EmployeeCRUDService){
         $scope.getEmployee = function(){
             var id = $scope.employee.id;
-            console.log(id);
             EmployeeCRUDService.getEmployee($scope.employee.id)
                 .then(function success(response){
                         $scope.employee = response.data;
