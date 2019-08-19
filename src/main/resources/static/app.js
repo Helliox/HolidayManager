@@ -23,9 +23,9 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
                     });
         };
         $scope.addEmployee = function() {
-            if ($scope.employee != null && $scope.employee.name && $scope.employee.surname && $scope.employee.email)
+            if ($scope.employee != null && $scope.employee.name && $scope.employee.surname && $scope.employee.email && $scope.employee.manager_status)
             {
-                EmployeeCRUDService.addEmployee($scope.employee.name, $scope.employee.surname, $scope.employee.email)
+                EmployeeCRUDService.addEmployee($scope.employee.name, $scope.employee.surname, $scope.employee.emai, $scope.employee.manager_status)
                     .then (function success(response){
                             $scope.message = 'Employee added!';
                             $scope.errorMessage = '';
@@ -41,7 +41,7 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
             }
         }
         $scope.updateEmployee = function() {
-            EmployeeCRUDService.updateEmployee($scope.employee.id_employee,$scope.employee.name,$scope.employee.surname, $scope.employee.email)
+            EmployeeCRUDService.updateEmployee($scope.employee.id_employee,$scope.employee.name,$scope.employee.surname, $scope.employee.email, $scope.employee.manager_status)
                 .then(function success(response)
                     {
                         $scope.message = "Employee data updated!";
@@ -85,7 +85,7 @@ app.service('EmployeeCRUDService',['$http', function($http){
             url: 'employees/' + employeeId
         });
     }
-    this.addEmployee = function addEmployee(name,surname,email)
+    this.addEmployee = function addEmployee(name,surname,email,manager_status)
     {
         return $http({
             method:'POST',
@@ -94,11 +94,12 @@ app.service('EmployeeCRUDService',['$http', function($http){
             {
                 name:name,
                 surname:surname,
-                email:email
+                email:email,
+                manager_status:manager_status
             }
         });
     }
-    this.updateEmployee = function updateEmployee(id,name,surname,email)
+    this.updateEmployee = function updateEmployee(id,name,surname,email,manager_status)
     {
         return $http({
             method: 'PATCH',
@@ -107,7 +108,8 @@ app.service('EmployeeCRUDService',['$http', function($http){
             {
                 name:name,
                 surname:surname,
-                email:email
+                email:email,
+                manager_status:manager_status
             }
         });
     }
@@ -358,7 +360,7 @@ app.controller('UsedOvertimeCRUDCtrl',['$scope','UsedOvertimeCRUDService',
     function ($scope, UsedOvertimeCRUDService){
         $scope.getUsedOvertime = function(){
             var id = $scope.overtime.id_overtime;
-            UsedOvertimeCRUDService.getUsedOvertime($scope.usedovertime.id_overtime)
+            UsedOvertimeCRUDService.getUsedOvertime($scope.usedovertime.id_usedovertime)
                 .then(function success(response){
                         $scope.usedovertime = response.data;
                         $scope.usedovertime.id_usedovertime = id;
@@ -457,6 +459,113 @@ app.service('UsedOvertimeCRUDService',['$http',function($http){
         return $http({
             method: 'DELETE',
             url: 'usedovertimes/' + id
+        });
+    }
+}]);
+
+app.controller('HolidayCRUDCtrl',['$scope','HolidayCRUDService',
+    function ($scope, HolidayCRUDService){
+        $scope.HolidayOvertime = function(){
+            var id = $scope.holiday.id_holiday;
+            HolidayCRUDService.getHoliday($scope.holiday.id_holiday)
+                .then(function success(response){
+                        $scope.holiday = response.data;
+                        $scope.holiday.id_holiday = id;
+                        $scope.message = '';
+                        $scope.errorMessage = '';
+                    },
+                    function error (response){
+                        $scope.message = '';
+                        if(response.status === 404) {
+                            $scope.errorMessage = 'Holiday not found!';
+                        }
+                        else{
+                            $scope.message = 'Error getting holiday!'
+                        }
+                    });
+        }
+        $scope.addHoliday = function() {
+            if ($scope.holiday != null && $scope.holiday.date_start && $scope.holiday.date_end && $scope.holiday.id_employee)
+            {
+                HolidayCRUDService.addHoliday($scope.holiday.date_start,$scope.holiday.date_end,$scope.holiday.id_employee)
+                    .then (function success(response){
+                            $scope.message = 'Holiday added!';
+                            $scope.errorMessage = '';
+                        },
+                        function error(response){
+                            $scope.errorMessage = 'Error adding Holiday!';
+                            $scope.message = '';
+                        });
+            }
+            else{
+                $scope.errorMessage = 'Please enter valid information!';
+                $scope.message = '';
+            }
+        }
+        $scope.updateHoliday = function() {
+            HolidayCRUDService.updateHoliday($scope.holiday.id_overtime,$scope.holiday.date_start,$scope.holiday.date_start,$scope.holiday.acceptation)
+                .then(function success(response)
+                    {
+                        $scope.message = "Holiday data updated!";
+                        $scope.errorMessage = '';
+                    },
+                    function error(response){
+                        $scope.errorMessage = 'Error updating Holiday!';
+                        $scope.message = '';
+                    });
+        }
+        $scope.deleteUsedOvertime = function(){
+            HolidayCRUDService.deleteHoliday($scope.holiday.id_holiday)
+                .then (function success(response){
+                        $scope.message = 'Holiday deleted!';
+                        $scope.errorMessage = '';
+                        $scope.Employee = '';
+                    },
+                    function error(response){
+                        $scope.errorMessage = 'Error deleting Holiday!';
+                        $scope.message = '';
+                    });
+        }
+    }]);
+
+app.service('HolidayCRUDService',['$http',function($http){
+    this.getHoliday = function getHoliday(holidayId){
+        return $http({
+            method: 'GET',
+            url: 'holidays/' + holidayId
+        });
+    }
+    this.addHoliday = function addHoliday(date_start,date_end,id_employee)
+    {
+        return $http({
+            method:'POST',
+            url:'holidays',
+            data:
+                {
+                    date_start:date_start,
+                    date_end:date_end,
+                    id_employee:id_employee
+                }
+        });
+    }
+    this.updateHoliday = function updateHoliday(id,date_start,date_end,acceptation)
+    {
+        return $http({
+            method: 'PATCH',
+            url:'holidays/' + id,
+            data:
+                {
+                    date_start:date_start,
+                    date_end:date_end,
+                    acceptation:acceptation
+                }
+        });
+    }
+    this.deleteHoliday = function deleteHoliday(id)
+    {
+        return $http({
+            method: 'DELETE',
+            url: 'holidays/' + id
         });
     }
 }]);
