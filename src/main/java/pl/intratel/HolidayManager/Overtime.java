@@ -10,30 +10,30 @@ public class Overtime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long id_overtime;
 
     private Date date_start;
     private Date date_end;
 
-    public long getEmployee_id() {
-        return employee_id;
+    public long getId_employee() {
+        return id_employee;
     }
 
-    public void setEmployee_id(long employee_id) {
-        this.employee_id = employee_id;
+    public void setId_employee(long id_employee) {
+        this.id_employee = id_employee;
     }
 
-    private long employee_id;
+    private long id_employee;
 
     public Overtime(){}
 
 
-    public long getId() {
-        return id;
+    public long getId_overtime() {
+        return id_overtime;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId_overtime(long id_overtime) {
+        this.id_overtime = id_overtime;
     }
 
     public Date getDate_start() {

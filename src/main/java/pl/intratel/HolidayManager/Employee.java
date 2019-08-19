@@ -1,7 +1,5 @@
 package pl.intratel.HolidayManager;
 
-import org.hibernate.annotations.GeneratorType;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -10,8 +8,8 @@ import java.util.Set;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id_employee;
 
     private String name;
     private String surname;
@@ -22,24 +20,24 @@ public class Employee {
 
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "employee_expertise",joinColumns = @JoinColumn(name="employee_id",referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "expertise_id", referencedColumnName = "id"))
+    @JoinTable(name = "employee_expertise",joinColumns = @JoinColumn(name="id_employee"), inverseJoinColumns = @JoinColumn(name = "id_expertise"))
     private Set<Expertise> expertises;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "id_employee")
     private Set<Overtime> overtime;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "id_employee")
     private Set<UsedOvertime> usedOvertime;
 
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "id_employee")
     private Set<Holiday> holiday;
 
-    public long getId() {
-        return id;
+    public long getId_employee() {
+        return id_employee;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId_employee(long id_employee) {
+        this.id_employee = id_employee;
     }
 
     public String getName() {
@@ -56,5 +54,21 @@ public class Employee {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public short getManager_status() {
+        return manager_status;
+    }
+
+    public void setManager_status(short manager_status) {
+        this.manager_status = manager_status;
     }
 }

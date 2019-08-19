@@ -10,30 +10,30 @@ import java.util.Set;
 public class Expertise {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_expertise;
 
-    private String expertiseType;
+    private String expertise_type;
 
     @ManyToMany(mappedBy = "expertises")
     private Set<Employee> employees = new HashSet<>();
 
     public Expertise(){}
 
-    public long getId() {
-        return id;
+    public int getId_expertise() {
+        return id_expertise;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId_expertise(int id_expertise) {
+        this.id_expertise = id_expertise;
     }
 
-    public String getExpertiseType() {
-        return expertiseType;
+    public String getExpertise_type() {
+        return expertise_type;
     }
 
-    public void setExpertiseType(String expertiseType) {
-        this.expertiseType = expertiseType;
+    public void setExpertise_type(String expertise_type) {
+        this.expertise_type = expertise_type;
     }
 
 }
