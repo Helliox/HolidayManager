@@ -22,10 +22,13 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
                         }
                     });
         };
+       $scope.getEmployeeId = function(id){
+            return getIndex(id);
+        };
         $scope.addEmployee = function() {
             if ($scope.employee != null && $scope.employee.name && $scope.employee.surname && $scope.employee.email && $scope.employee.manager_status)
             {
-                EmployeeCRUDService.addEmployee($scope.employee.name, $scope.employee.surname, $scope.employee.emai, $scope.employee.manager_status)
+                EmployeeCRUDService.addEmployee($scope.employee.name, $scope.employee.surname, $scope.employee.email, $scope.employee.manager_status)
                     .then (function success(response){
                             $scope.message = 'Employee added!';
                             $scope.errorMessage = '';
@@ -67,11 +70,13 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
         $scope.getAllEmployees = function(){
             EmployeeCRUDService.getAllEmployees()
                 .then(function success(response){
-                        $scope.employee = response.data._embedded.employee;
+                    console.log("success");
+                        $scope.employees = response.data._embedded.employees;
                         $scope.message = '';
                         $scope.errorMessage = '';
                     },
                     function errorMessage(response){
+                    console.log("error");
                         $scope.message = '';
                         $scope.errorMessage = 'Error getting employees!';
                     });
@@ -569,3 +574,11 @@ app.service('HolidayCRUDService',['$http',function($http){
         });
     }
 }]);
+
+//JS
+
+
+function getIndex(id)
+{
+    return id.substring(32,id.length);
+}

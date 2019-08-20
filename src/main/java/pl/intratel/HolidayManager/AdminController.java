@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class EmployeeController {
+public class AdminController {
 
-    @GetMapping("/employeesView")
-    public String employeesView(){
-        return "employees";
+    @GetMapping("/adminView")
+    public String adminView(){
+        return "administration";
     }
 
 }

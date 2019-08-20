@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -8,27 +8,35 @@
 </head>
 <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <script src = "app.js"></script>
+
+
 <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">Administration Panel</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" href="#">Users</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" href="#">Expertises</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" href="#">Holidays</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Overtimes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Used Overtimes</a>
                 </li>
             </ul>
         </div>
     </nav>
-  <div ng-controller="EmployeeCRUDCtrl">
+  <div ng-controller="EmployeeCRUDCtrl" ng-app="app">
         <table>
             <tr>
                 <td width="100">ID:</td>
@@ -55,33 +63,49 @@
         <a ng-click="updateEmployee(employee.id_employee,employee.name,employee.email,employee.manager_status)">Update Employee</a>
         <a ng-click="addEmployee(employee.name,employee.surname,employee.email,employee.manager_status)">Add Employee</a>
         <a ng-click="deleteEmployee(employee.id_employee)">Delete Employee</a>
-        <a ng-click="getAllEmployee()">Get all Employees</a><br/><br/>
+        <a ng-click="getAllEmployees()">Get all Employees</a><br/><br/>
         <p style="color:green">{{message}}</p>
         <p style="color:red">{{errorMessage}}</p>
-        <br/><br/>
-        <div ng-repeat="employee in employees">
-            {{employee.name}} {{employee.surname}}
-        </div>
+      <h4>Users List</h4>
+      <a ng-init="getAllEmployees()"></a>
+          <table class="table table-striped">
+              <thead>
+              <tr>
+                  <td>ID</td>
+                  <td>Name</td>
+                  <td>Surname</td>
+                  <td>Email</td>
+                  <td>Manager</td>
+                  <td>Action Commands</td>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="employee in employees">
+                  <td>
+                      {{getEmployeeId(employee._links.self.href)}}
+                  </td>
+                  <td>
+                      {{employee.name}}
+                  </td>
+                  <td>
+                      {{employee.surname}}
+                  </td>
+                  <td>
+                      {{employee.email}}
+                  </td>
+                  <td>
+                      {{employee.manager_status}}
+                  </td>
+                  <td>
+                      <button class="btn btn-success btn-sm" ng-click="editUser(user)">Edit</button>
+                      <button class="btn btn-danger btn-sm" ng-click="deleteUser(user)">Delete</button>
+                  </td>
+              </tr>
+              </tbody>
+
+          </table>
     </div>
-    <div ng-controller="ExpertiseCRUDCtrl">
-        <table>
-            <tr>
-                <td width="100">ID:</td>
-                <td><input type="text" id="id_expertise" ng-model="expertise.id_expertise"/></td>
-            </tr>
-            <tr>
-                <td width="100">Name:</td>
-                <td><input type="text" id="expertise_type" ng-model="expertise.expertise_type"/></td>
-            </tr>
-        </table>
-        <a ng-click="getExpertise(expertise.id_expertise)">Get Expertise</a>
-        <a ng-click="updateExpertise(expertise.id_expertise,expertise.expertise_type)">Update Expertise</a>
-        <a ng-click="addExpertise(expertise.expertise_type)">Add Expertise</a>
-        <a ng-click="deleteExpertise(expertise.id_expertise)">Delete Expertise</a>
-        <a ng-click="getAllExpertises()">Get All Expertise</a>
-        <p style="color:green">{{message}}</p>
-        <p style="color:red">{{errorMessage}}</p>
-    </div>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
