@@ -12,17 +12,17 @@
 
 <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <a class="navbar-brand" href="#">Administration Panel</a>
+        <a class="navbar-brand" href="/adminView">Administration Panel</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Users</a>
+                    <a class="nav-link" href="/adminView">Users</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Expertises</a>
+                    <a class="nav-link" href="/adminView/expertise">Expertises</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Holidays</a>
@@ -36,29 +36,42 @@
             </ul>
         </div>
     </nav>
-  <div ng-controller="EmployeeCRUDCtrl" ng-app="app">
-        <table>
-            <tr>
-                <td width="100">ID:</td>
-                <td><input type="text" id="id_employee" ng-model="employee.id_employee" /></td>
-            </tr>
-            <tr>
-                <td width="100">Name:</td>
-                <td><input type="text" id="name" ng-model="employee.name" /></td>
-            </tr>
-            <tr>
-                <td width="100">Surname:</td>
-                <td><input type="text" id="surname" ng-model="employee.surname" /></td>
-            </tr>
-            <tr>
-                <td width="100">Email:</td>
-                <td><input type="text" id="email" ng-model="employee.email"/></td>
-            </tr>
-            <tr>
-                <td width="100">Manager status:</td>
-                <td><input type="text" id="manager_status" ng-model="employee.manager_status"/></td>
-            </tr>
-        </table>
+  <div ng-controller="EmployeeCRUDCtrl" ng-app="app" class="container">
+
+
+      <form oninput='up2.setCustomValidity(up2.value != up.value ? "Passwords do not match." : "")'><br>
+        <!--  <div class="form-group">
+              <label for="inputName">Id</label>
+              <input type="text" class="form-control" id="inputId"  placeholder="Enter id" ng-model="employee.id_e">
+          </div> -->
+          <div class="form-group">
+              <label for="inputName">Name</label>
+              <input type="text" class="form-control" id="inputName"  placeholder="Enter name" ng-model="employee.name">
+          </div>
+          <div class="form-group">
+              <label for="inputSurname">Surname</label>
+              <input type="text" class="form-control" id="inputSurname"  placeholder="Enter surname" ng-model="employee.surname">
+          </div>
+          <div class="form-group">
+              <label for="inputEmail">Email address</label>
+              <input type="email" class="form-control" id="inputEmail"  placeholder="Enter email" ng-model="employee.email">
+          </div>
+          <div class="form-group">
+              <label for="inputPassword">Password</label>
+              <input type="password" class="form-control" id="inputPassword" placeholder="Password" name=up>
+          </div>
+          <div class="form-group">
+              <label for="inputPassword2">Confirm password</label>
+              <input type="password" class="form-control" id="inputPassword2" placeholder="Confirm password" name=up2>
+          </div>
+          <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1" value="false" ng-model="employee.manager_status">
+              <label class="form-check-label" for="exampleCheck1">Manager</label>
+          </div>
+          <br>
+          <button type="submit" class="btn btn-primary" ng-click="addEmployee(employee.name,employee.surname,employee.email,employee.manager_status);getAllEmployees()">Add Employee</button>
+      </form>
+
         <a ng-click="getEmployee(employee.id_employee)">Get Employee</a>
         <a ng-click="updateEmployee(employee.id_employee,employee.name,employee.email,employee.manager_status)">Update Employee</a>
         <a ng-click="addEmployee(employee.name,employee.surname,employee.email,employee.manager_status)">Add Employee</a>
@@ -80,25 +93,25 @@
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="employee in employees">
+              <tr ng-repeat="employeeLoop in employees">
                   <td>
-                      {{getEmployeeId(employee._links.self.href)}}
+                      {{getEmployeeId(employeeLoop._links.self.href)}}
                   </td>
                   <td>
-                      {{employee.name}}
+                      {{employeeLoop.name}}
                   </td>
                   <td>
-                      {{employee.surname}}
+                      {{employeeLoop.surname}}
                   </td>
                   <td>
-                      {{employee.email}}
+                      {{employeeLoop.email}}
                   </td>
                   <td>
-                      {{employee.manager_status}}
+                      {{employeeLoop.manager_status}}
                   </td>
                   <td>
                       <button class="btn btn-success btn-sm" ng-click="editUser(user)">Edit</button>
-                      <button class="btn btn-danger btn-sm" ng-click="deleteUser(user)">Delete</button>
+                      <button class="btn btn-danger btn-sm" ng-click="deleteEmployee(getEmployeeId(employeeLoop._links.self.href));deleterow($index)">Delete</button>
                   </td>
               </tr>
               </tbody>

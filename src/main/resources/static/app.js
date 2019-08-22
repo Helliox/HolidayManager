@@ -23,12 +23,12 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
                     });
         };
        $scope.getEmployeeId = function(id){
-            return getIndex(id);
+            return getIndex(32,id);
         };
         $scope.addEmployee = function() {
-            if ($scope.employee != null && $scope.employee.name && $scope.employee.surname && $scope.employee.email && $scope.employee.manager_status)
+            if ($scope.employee != null && $scope.employee.name && $scope.employee.surname && $scope.employee.email)
             {
-                EmployeeCRUDService.addEmployee($scope.employee.name, $scope.employee.surname, $scope.employee.email, $scope.employee.manager_status)
+                EmployeeCRUDService.addEmployee($scope.employee.name, $scope.employee.surname, $scope.employee.email, Number($scope.employee.manager_status))
                     .then (function success(response){
                             $scope.message = 'Employee added!';
                             $scope.errorMessage = '';
@@ -55,8 +55,8 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
                         $scope.message = '';
                     });
         }
-        $scope.deleteEmployee = function(){
-            EmployeeCRUDService.deleteEmployee($scope.employee.id_employee)
+        $scope.deleteEmployee = function(data){
+            EmployeeCRUDService.deleteEmployee(data)
                 .then (function success(response){
                         $scope.message = 'Employee deleted!';
                         $scope.errorMessage = '';
@@ -67,18 +67,22 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
                         $scope.message = '';
                     });
         }
+        $scope.deleteRow = function(index)
+        {
+            $scope.employees.splice(index,1);
+        }
         $scope.getAllEmployees = function(){
             EmployeeCRUDService.getAllEmployees()
                 .then(function success(response){
                     console.log("success");
                         $scope.employees = response.data._embedded.employees;
-                        $scope.message = '';
-                        $scope.errorMessage = '';
+                       // $scope.message = '';
+                       // $scope.errorMessage = '';
                     },
                     function errorMessage(response){
                     console.log("error");
-                        $scope.message = '';
-                        $scope.errorMessage = 'Error getting employees!';
+                    //    $scope.message = '';
+                     //   $scope.errorMessage = 'Error getting employees!';
                     });
         }
     }]);
@@ -155,6 +159,9 @@ app.controller('ExpertiseCRUDCtrl',['$scope','ExpertiseCRUDService',
                     }
                     });
         }
+        $scope.getExpertiseId = function(id){
+            return getIndex(33,id);
+        };
         $scope.addExpertise = function() {
             if ($scope.expertise != null && $scope.expertise.expertise_type)
             {
@@ -185,8 +192,8 @@ app.controller('ExpertiseCRUDCtrl',['$scope','ExpertiseCRUDService',
                         $scope.message = '';
                     });
         }
-        $scope.deleteExpertise = function(){
-            ExpertiseCRUDService.deleteExpertise($scope.expertise.id_expertise)
+        $scope.deleteExpertise = function(index){
+            ExpertiseCRUDService.deleteExpertise(index)
                 .then (function success(response){
                         $scope.message = 'Expertise deleted!';
                         $scope.errorMessage = '';
@@ -197,16 +204,20 @@ app.controller('ExpertiseCRUDCtrl',['$scope','ExpertiseCRUDService',
                         $scope.message = '';
                     });
         }
+        $scope.deleteRow = function(index)
+        {
+            $scope.expertises.splice(index,1);
+        }
         $scope.getAllExpertises = function(){
             ExpertiseCRUDService.getAllExpertises()
                 .then(function success(response){
-                        $scope.expertise = response.data._embedded.expertise;
-                        $scope.message = '';
-                        $scope.errorMessage = '';
+                        $scope.expertises = response.data._embedded.expertises;
+                        //$scope.message = '';
+                       // $scope.errorMessage = '';
                     },
                     function errorMessage(response){
-                        $scope.message = '';
-                        $scope.errorMessage = 'Error getting employees!';
+                       // $scope.message = '';
+                       // $scope.errorMessage = 'Error getting employees!';
                     });
         }
 }]);
@@ -215,14 +226,14 @@ app.service('ExpertiseCRUDService',['$http',function($http){
     this.getExpertise = function getExpertise(expertiseId){
         return $http({
             method: 'GET',
-            url: 'expertises/' + expertiseId
+            url: '/expertises/' + expertiseId
         });
     }
     this.addExpertise = function addExpertise(expertise_type)
     {
         return $http({
             method:'POST',
-            url:'expertises',
+            url:'/expertises',
             data:
                 {
                     expertise_type:expertise_type
@@ -233,7 +244,7 @@ app.service('ExpertiseCRUDService',['$http',function($http){
     {
         return $http({
             method: 'PATCH',
-            url:'expertises/' + id,
+            url:'/expertises/' + id,
             data:
                 {
                     expertise_type:expertise_type
@@ -244,13 +255,13 @@ app.service('ExpertiseCRUDService',['$http',function($http){
     {
         return $http({
             method: 'DELETE',
-            url: 'expertises/' + id
+            url: '/expertises/' + id
         });
     }
     this.getAllExpertises = function getAllExpertises() {
         return $http({
             method: 'GET',
-            url: 'expertises'
+            url: '/expertises'
         });
     }
 }]);
@@ -578,7 +589,7 @@ app.service('HolidayCRUDService',['$http',function($http){
 //JS
 
 
-function getIndex(id)
+function getIndex(amountBeforeId,id)
 {
-    return id.substring(32,id.length);
+    return id.substring(amountBeforeId,id.length);
 }
