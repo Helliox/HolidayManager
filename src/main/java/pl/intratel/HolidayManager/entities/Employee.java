@@ -1,4 +1,4 @@
-package pl.intratel.HolidayManager;
+package pl.intratel.HolidayManager.entities;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -15,6 +15,7 @@ public class Employee {
     private String surname;
     private String email;
     private short manager_status;
+    private String password;
 
     public Employee(){}
 
@@ -70,5 +71,13 @@ public class Employee {
 
     public void setManager_status(short manager_status) {
         this.manager_status = manager_status;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

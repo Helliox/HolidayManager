@@ -1,9 +1,8 @@
-package pl.intratel.HolidayManager;
+package pl.intratel.HolidayManager.entities;
 
 
-
-import java.sql.Date;
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity(name="holiday")
 @Table(name="holiday")

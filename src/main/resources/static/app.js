@@ -85,6 +85,12 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
                      //   $scope.errorMessage = 'Error getting employees!';
                     });
         }
+        $scope.getManagerText = function(id){
+            if(id==1)
+                return "Yes"
+            else
+                return "No"
+        }
     }]);
 
 app.service('EmployeeCRUDService',['$http', function($http){

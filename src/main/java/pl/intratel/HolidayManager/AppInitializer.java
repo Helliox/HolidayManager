@@ -6,7 +6,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
 
         protected Class<?>[] getRootConfigClasses() {
-            return new Class[] {SecSecurityConfig.class};
+            return new Class[] {WebSecurityConfig.class};
         }
 
     @Override

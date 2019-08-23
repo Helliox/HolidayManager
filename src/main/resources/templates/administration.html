@@ -24,15 +24,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/adminView/expertise">Expertises</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Holidays</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Overtimes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Used Overtimes</a>
-                </li>
             </ul>
         </div>
     </nav>
@@ -107,7 +98,7 @@
                       {{employeeLoop.email}}
                   </td>
                   <td>
-                      {{employeeLoop.manager_status}}
+                      {{getManagerText(employeeLoop.manager_status)}}
                   </td>
                   <td>
                       <button class="btn btn-success btn-sm" ng-click="editUser(user)">Edit</button>

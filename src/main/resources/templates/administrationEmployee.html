@@ -10,7 +10,7 @@
 <script src = "/app.js"></script>
 
 
-<body  ng-app="app">
+<body>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <a class="navbar-brand" href="/adminView">Administration Panel</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -44,13 +44,14 @@
     </form>
     <p style="color:green">{{message}}</p>
     <p style="color:red">{{errorMessage}}</p>
-    <h4>Expertises List</h4>
+    <h4>Users List</h4>
     <a ng-init="getAllExpertises()"></a>
     <table class="table table-striped">
         <thead>
         <tr>
             <td>ID</td>
             <td>Expertise Type</td>
+            <td>Used by</td>
             <td>Action Commands</td>
         </tr>
         </thead>
@@ -61,6 +62,9 @@
             </td>
             <td>
                 {{expertiseLoop.expertise_type}}
+            </td>
+            <td>
+                placeholder
             </td>
             <td>
                 <button class="btn btn-danger btn-sm" ng-click="deleteExpertise(getExpertiseId(expertiseLoop._links.self.href));deleteRow($index)">Delete</button>

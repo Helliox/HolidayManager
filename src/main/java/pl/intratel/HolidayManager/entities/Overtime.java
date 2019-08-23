@@ -1,4 +1,4 @@
-package pl.intratel.HolidayManager;
+package pl.intratel.HolidayManager.entities;
 
 
 import javax.persistence.*;
