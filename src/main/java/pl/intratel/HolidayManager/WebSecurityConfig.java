@@ -1,8 +1,10 @@
 package pl.intratel.HolidayManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +27,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
+    @Value("${spring.queries.users-query}")
+    private String usersQuery;
+    @Value("${spring.queries.roles-query}")
+    private String rolesQuery;
+
     @PostConstruct
     public void completeSetup(){
         employeeService = applicationContext.getBean(EmployeeService.class);
@@ -38,6 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .jdbcAuthentication()
+                .usersByUsernameQuery(usersQuery)
+                .authoritiesByUsernameQuery(rolesQuery)
                 .dataSource(dataSource);
     }
 
@@ -46,12 +55,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login*").permitAll()
+                .antMatchers("/login").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/perform_login")
                 .defaultSuccessUrl("/adminView", true)
                 //.failureUrl("/login.html?error=true")
+                .usernameParameter("email")
+                .usernameParameter("password")
                 .and()
                 .logout()
                 .logoutUrl("/perform_logout")
@@ -69,4 +81,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(11);
     }
+
 }
