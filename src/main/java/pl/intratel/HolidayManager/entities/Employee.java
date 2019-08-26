@@ -18,7 +18,6 @@ public class Employee {
     private String surname;
     private String email;
     private String password;
-    private short active;
 
     public Employee(){}
 
@@ -70,14 +69,6 @@ public class Employee {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public short getActive() {
-        return active;
-    }
-
-    public void setActive(short active) {
-        this.active = active;
     }
 
     public String getPassword() {

@@ -1,4 +1,4 @@
-package pl.intratel.HolidayManager;
+package pl.intratel.HolidayManager.authentication;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

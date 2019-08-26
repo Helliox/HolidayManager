@@ -55,10 +55,6 @@
               <label for="inputPassword2">Confirm password</label>
               <input type="password" class="form-control" id="inputPassword2" placeholder="Confirm password" name=up2>
           </div>
-          <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1" value="false" ng-model="employee.manager_status">
-              <label class="form-check-label" for="exampleCheck1">Manager</label>
-          </div>
           <br>
           <button type="submit" class="btn btn-primary" ng-click="addEmployee(employee.name,employee.surname,employee.email,employee.password);getAllEmployees()">Add Employee</button>
       </form>
@@ -98,7 +94,7 @@
                       {{employeeLoop.email}}
                   </td>
                   <td>
-                      {{getManagerText(employeeLoop.manager_status)}}
+                      {{}}
                   </td>
                   <td>
                       <button class="btn btn-success btn-sm" ng-click="editUser(user)">Edit</button>
