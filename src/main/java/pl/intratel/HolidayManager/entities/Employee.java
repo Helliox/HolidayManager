@@ -1,6 +1,8 @@
 package pl.intratel.HolidayManager.entities;
 
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -83,7 +85,9 @@ public class Employee {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        String hashedPassword = passwordEncoder.encode(password);
+        this.password = hashedPassword;
     }
 
     public Set<Expertise> getExpertises() {
