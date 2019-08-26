@@ -2,12 +2,11 @@ package pl.intratel.HolidayManager;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer{
+public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-
-        protected Class<?>[] getRootConfigClasses() {
-            return new Class[] {WebSecurityConfig.class};
-        }
+    protected Class<?>[] getRootConfigClasses() {
+        return new Class[] {SecSecurityConfig.class};
+    }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {

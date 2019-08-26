@@ -26,9 +26,9 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
             return getIndex(32,id);
         };
         $scope.addEmployee = function() {
-            if ($scope.employee != null && $scope.employee.name && $scope.employee.surname && $scope.employee.email)
+            if ($scope.employee != null && $scope.employee.name && $scope.employee.surname && $scope.employee.email && $scope.employee.password)
             {
-                EmployeeCRUDService.addEmployee($scope.employee.name, $scope.employee.surname, $scope.employee.email, Number($scope.employee.manager_status))
+                EmployeeCRUDService.addEmployee($scope.employee.name, $scope.employee.surname, $scope.employee.email, $scope.employee.password)
                     .then (function success(response){
                             $scope.message = 'Employee added!';
                             $scope.errorMessage = '';
@@ -100,7 +100,7 @@ app.service('EmployeeCRUDService',['$http', function($http){
             url: 'employees/' + employeeId
         });
     }
-    this.addEmployee = function addEmployee(name,surname,email,manager_status)
+    this.addEmployee = function addEmployee(name,surname,email,password)
     {
         return $http({
             method:'POST',
@@ -110,7 +110,7 @@ app.service('EmployeeCRUDService',['$http', function($http){
                 name:name,
                 surname:surname,
                 email:email,
-                manager_status:manager_status
+                password:password
             }
         });
     }

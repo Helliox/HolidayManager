@@ -1,5 +1,6 @@
 package pl.intratel.HolidayManager.entities;
 
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -14,8 +15,8 @@ public class Employee {
     private String name;
     private String surname;
     private String email;
-    private short manager_status;
     private String password;
+    private short active;
 
     public Employee(){}
 
@@ -32,6 +33,10 @@ public class Employee {
 
     @OneToMany(mappedBy = "id_employee")
     private Set<Holiday> holiday;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "employee_role",joinColumns = @JoinColumn(name="id_employee"), inverseJoinColumns = @JoinColumn(name = "id_role"))
+    private Set<Role> roles;
 
     public long getId_employee() {
         return id_employee;
@@ -65,12 +70,12 @@ public class Employee {
         this.email = email;
     }
 
-    public short getManager_status() {
-        return manager_status;
+    public short getActive() {
+        return active;
     }
 
-    public void setManager_status(short manager_status) {
-        this.manager_status = manager_status;
+    public void setActive(short active) {
+        this.active = active;
     }
 
     public String getPassword() {
@@ -80,4 +85,45 @@ public class Employee {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Set<Expertise> getExpertises() {
+        return expertises;
+    }
+
+    public void setExpertises(Set<Expertise> expertises) {
+        this.expertises = expertises;
+    }
+
+    public Set<Overtime> getOvertime() {
+        return overtime;
+    }
+
+    public void setOvertime(Set<Overtime> overtime) {
+        this.overtime = overtime;
+    }
+
+    public Set<UsedOvertime> getUsedOvertime() {
+        return usedOvertime;
+    }
+
+    public void setUsedOvertime(Set<UsedOvertime> usedOvertime) {
+        this.usedOvertime = usedOvertime;
+    }
+
+    public Set<Holiday> getHoliday() {
+        return holiday;
+    }
+
+    public void setHoliday(Set<Holiday> holiday) {
+        this.holiday = holiday;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
 }
