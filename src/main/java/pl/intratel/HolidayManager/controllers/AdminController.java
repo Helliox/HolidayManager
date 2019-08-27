@@ -20,7 +20,7 @@ import javax.validation.Valid;
 public class AdminController {
 
 
-    @RequestMapping(value={"/adminView","/"}, method = RequestMethod.GET)
+    @RequestMapping(value={"/adminView"}, method = RequestMethod.GET)
     public String adminView()
     {
         return "administration";

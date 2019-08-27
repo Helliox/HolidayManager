@@ -74,13 +74,11 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
         $scope.getAllEmployees = function(){
             EmployeeCRUDService.getAllEmployees()
                 .then(function success(response){
-                    console.log("success");
                         $scope.employees = response.data._embedded.employees;
                        // $scope.message = '';
                        // $scope.errorMessage = '';
                     },
                     function errorMessage(response){
-                    console.log("error");
                     //    $scope.message = '';
                      //   $scope.errorMessage = 'Error getting employees!';
                     });
@@ -91,6 +89,7 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
             else
                 return "No"
         }
+
     }]);
 
 app.service('EmployeeCRUDService',['$http', function($http){
