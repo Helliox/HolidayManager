@@ -19,11 +19,10 @@
     <script src="https://unpkg.com/@fullcalendar/interaction@4.3.0/main.min.js"></script>
     <script src="https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="app.js"></script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
@@ -36,14 +35,14 @@
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    right: 'dayGridMonth'
                 },
                 select:  function(info) {
                     $(document).ready(function(){
                         $("#starterModal").modal();
                     })
-                    test = info.startStr;
-                    document.getElementById("availableHours").innerHTML = test;
+
+                    document.getElementById("inputOvertimeDate").innerHTML = info.startStr;
                 },
             });
 
@@ -51,6 +50,7 @@
         });
 
         var test;
+
 
 
     </script>
@@ -99,20 +99,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col text-center">
-                            <form>
-                                <div class="form-group">
-                                    <label for="inputOvertimeDate"></label>
-                                    <input type="text" class="form-control" id="inputOvertimeDate"  placeholder="Enter overtime date">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputOvertimeStart"></label>
-                                    <input type="text" class="form-control" id="inputOvertimeStart"  placeholder="Enter overtime starting hour">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputOvertimeEnd"></label>
-                                    <input type="text" class="form-control" id="inputOvertimeEnd"  placeholder="Enter overtime ending hour">
-                                </div>
-                            </form>
+                        <p>Picked Date: <div id="inputOvertimeDate"></div></p>
                     </div>
                 </div>
             </div>
@@ -180,11 +167,11 @@
                     <div class="col text-center">
                         <form>
                             <div class="form-group">
-                                <label for="inputOvertimeDate"></label>
+                                <label for="inputHolidayStart"></label>
                                 <input type="text" class="form-control" id="inputHolidayStart"  placeholder="Enter holiday starting date">
                             </div>
                             <div class="form-group">
-                                <label for="inputOvertimeStart"></label>
+                                <label for="inputHolidayEnd"></label>
                                 <input type="text" class="form-control" id="inputHolidayEnd"  placeholder="Enter holiday ending date">
                             </div>
                         </form>
@@ -198,7 +185,6 @@
         </div>
     </div>
 </div>
-
 
 </body>
 </html>
