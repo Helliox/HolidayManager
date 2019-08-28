@@ -62,11 +62,6 @@
           <button type="submit" class="btn btn-primary" ng-click="addEmployee(employee.name,employee.surname,employee.email,employee.password);getAllEmployees()">Add Employee</button>
       </form>
 
-        <a ng-click="getEmployee(employee.id_employee)">Get Employee</a>
-        <a ng-click="updateEmployee(employee.id_employee,employee.name,employee.email,employee.manager_status)">Update Employee</a>
-        <a ng-click="addEmployee(employee.name,employee.surname,employee.email,employee.manager_status)">Add Employee</a>
-        <a ng-click="deleteEmployee(employee.id_employee)">Delete Employee</a>
-        <a ng-click="getAllEmployees()">Get all Employees</a><br/><br/>
         <p style="color:green">{{message}}</p>
         <p style="color:red">{{errorMessage}}</p>
       <h4>Users List</h4>

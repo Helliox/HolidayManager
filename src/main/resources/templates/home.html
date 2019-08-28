@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang='en' ng-app="app">
 <head>
     <meta charset='utf-8' />
 
@@ -12,11 +12,17 @@
     <link href="https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.css" rel="stylesheet">
     <link href="https://unpkg.com/@fullcalendar/core@4.3.1/main.min.css" rel="stylesheet">
     <link href="https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <script src="https://unpkg.com/@fullcalendar/core@4.3.1/main.min.js"></script>
     <script src="https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.js"></script>
     <script src="https://unpkg.com/@fullcalendar/interaction@4.3.0/main.min.js"></script>
     <script src="https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="app.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -27,22 +33,172 @@
                 defaultView: 'dayGridMonth',
                 defaultDate: '2019-08-07',
                 selectable: true,
-                selectMirror: true,
                 header: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-
+                select:  function(info) {
+                    $(document).ready(function(){
+                        $("#starterModal").modal();
+                    })
+                    test = info.startStr;
+                    document.getElementById("availableHours").innerHTML = test;
+                },
             });
 
             calendar.render();
         });
+
+        var test;
+
+
     </script>
 </head>
 <body>
+<div id="calendar"></div>
 
-<div id='calendar'></div>
+<div class="modal" id="starterModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                        <h4 class="modal-title">Choose option</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" id="modalBodyToChange">
+                <div class="row">
+                    <div class="col text-center">
+                        <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addOvertimeModal" >Add Overtime</button>
+                        <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addUseOvertimeModal">Use Overtime</button>
+                        <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addHoliday">Ask for Holiday</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="addOvertimeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add Overtime</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col text-center">
+                            <form>
+                                <div class="form-group">
+                                    <label for="inputOvertimeDate"></label>
+                                    <input type="text" class="form-control" id="inputOvertimeDate"  placeholder="Enter overtime date">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputOvertimeStart"></label>
+                                    <input type="text" class="form-control" id="inputOvertimeStart"  placeholder="Enter overtime starting hour">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputOvertimeEnd"></label>
+                                    <input type="text" class="form-control" id="inputOvertimeEnd"  placeholder="Enter overtime ending hour">
+                                </div>
+                            </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Add</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#starterModal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="addUseOvertimeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add Overtime</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col text-center">
+                        <p>Available hours: <p id="availableHours"></p></p>
+                        <form>
+                            <div class="form-group">
+                                <label for="inputUseOvertimeDate"></label>
+                                <input type="text" class="form-control" id="inputUseOvertimeDate"  placeholder="Enter overtime date">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputUseOvertimeStart"></label>
+                                <input type="text" class="form-control" id="inputUseOvertimeStart"  placeholder="Enter overtime starting hour">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputUseOvertimeEnd"></label>
+                                <input type="text" class="form-control" id="inputUseOvertimeEnd"  placeholder="Enter overtime ending hour">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Add</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#starterModal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="addHoliday">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Ask for Holiday</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col text-center">
+                        <form>
+                            <div class="form-group">
+                                <label for="inputOvertimeDate"></label>
+                                <input type="text" class="form-control" id="inputHolidayStart"  placeholder="Enter holiday starting date">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputOvertimeStart"></label>
+                                <input type="text" class="form-control" id="inputHolidayEnd"  placeholder="Enter holiday ending date">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Add</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#starterModal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>
