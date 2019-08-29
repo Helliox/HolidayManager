@@ -28,6 +28,8 @@ public class MyUserPrincipal implements UserDetails {
         return employee.getEmail();
     }
 
+    public Long getId(){return employee.getId_employee();}
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

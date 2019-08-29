@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='en' ng-app="app">
+<html lang='en' ng-app="app" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset='utf-8' />
 
@@ -13,6 +13,10 @@
     <link href="https://unpkg.com/@fullcalendar/core@4.3.1/main.min.css" rel="stylesheet">
     <link href="https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+
+    <link href="jquery.datetimepicker.min.css" rel="stylesheet">
+
 
     <script src="https://unpkg.com/@fullcalendar/core@4.3.1/main.min.js"></script>
     <script src="https://unpkg.com/@fullcalendar/daygrid@4.3.0/main.min.js"></script>
@@ -20,9 +24,12 @@
     <script src="https://unpkg.com/@fullcalendar/timegrid@4.3.0/main.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
     <script src="app.js"></script>
+    <script src="jquery.datetimepicker.full.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
@@ -45,14 +52,22 @@
                     document.getElementById("inputOvertimeDate").innerHTML = info.startStr;
                 },
             });
-
             calendar.render();
         });
 
-        var test;
+    </script>
+    <script th:inline="javascript">
+        window.onload= function(){
+            var test = /*[[${msg}]]*/ 'default'
+            jQuery.datetimepicker.setLocale('en');
+            $('.datetimepicker').datetimepicker({
+                datepicker:false,
+                format: 'H:i'
+            });
+        }
+        /*<![CDATA[*/
 
-
-
+        /*]]>*/
     </script>
 </head>
 <body>
@@ -100,7 +115,18 @@
                 <div class="row">
                     <div class="col text-center">
                         <p>Picked Date: <div id="inputOvertimeDate"></div></p>
+                        <form>
+                            <div class="form-group">
+                                <label for="datetimepicker1">Overtime starting hour</label>
+                                <input id="datetimepicker1"  class="form-control datetimepicker" type="text" placeholder="Enter overtime starting hour"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="datetimepicker2">Overtime ending hour</label>
+                                <input id="datetimepicker2"  class="form-control datetimepicker" type="text" placeholder="Enter overtime ending hour"/>
+                            </div>
+                        </form>
                     </div>
+
                 </div>
             </div>
             <div class="modal-footer">
