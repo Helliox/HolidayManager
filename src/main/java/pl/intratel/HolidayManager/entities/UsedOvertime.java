@@ -9,7 +9,7 @@ import java.sql.Date;
 public class UsedOvertime {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private Date date_start;

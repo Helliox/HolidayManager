@@ -1,6 +1,7 @@
 var app = angular.module('app',[]);
 
 
+
 app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
     function ($scope, EmployeeCRUDService){
         $scope.getEmployee = function(){
@@ -272,7 +273,7 @@ app.service('ExpertiseCRUDService',['$http',function($http){
 }]);
 
 app.controller('OvertimeCRUDCtrl',['$scope','OvertimeCRUDService',
-    function ($scope, OvertimeCRUDService){
+    function ($scope ,OvertimeCRUDService){
         $scope.getOvertime = function(){
             var id = $scope.overtime.id_overtime;
             OvertimeCRUDService.getOvertime($scope.overtime.id_overtime)
@@ -292,10 +293,14 @@ app.controller('OvertimeCRUDCtrl',['$scope','OvertimeCRUDService',
                         }
                     });
         }
-        $scope.addOvertime = function() {
-            if ($scope.overtime != null && $scope.overtime.date_start && $scope.overtime.date_end && $scope.overtime.id_employee)
+        $scope.addOvertime = function(day,start,end,id) {
+            $scope.overtime.date_day = day;
+            $scope.overtime.date_start = start;
+            $scope.overtime.date_end = end;
+            $scope.overtime.id_employee = id;
+            if ($scope.overtime != null && $scope.overtime.date_start && $scope.overtime.date_end)
             {
-                OvertimeCRUDService.addOvertime($scope.overtime.date_start,$scope.overtime.date_end,$scope.overtime.id_employee)
+                OvertimeCRUDService.addOvertime($scope.overtime.date_day,$scope.overtime.date_start,$scope.overtime.date_end,$scope.overtime.id_employee)
                     .then (function success(response){
                             $scope.message = 'Overtime added!';
                             $scope.errorMessage = '';
@@ -343,13 +348,14 @@ app.service('OvertimeCRUDService',['$http',function($http){
             url: 'overtimes/' + overtimeId
         });
     }
-    this.addOvertime = function addOvertime(date_start,date_end,id_employee)
+    this.addOvertime = function addOvertime(date_day,date_start,date_end,id_employee)
     {
         return $http({
             method:'POST',
             url:'overtimes',
             data:
                 {
+                    date_day:date_day,
                     date_start:date_start,
                     date_end:date_end,
                     id_employee:id_employee
