@@ -18,6 +18,7 @@ public class Employee {
     private String surname;
     private String email;
     private String password;
+    private String active;
 
     public Employee(){}
 
@@ -121,4 +122,11 @@ public class Employee {
         this.roles = roles;
     }
 
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
 }

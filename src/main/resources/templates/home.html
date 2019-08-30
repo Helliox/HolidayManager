@@ -31,6 +31,11 @@
     <script src="jquery.datetimepicker.full.min.js"></script>
     <script th:inline="javascript">
         var idEmployee = /*[[${msg}]]*/ 'default'
+        /*<![CDATA[*/
+
+        /*]]>*/
+    </script>
+    <script>
         window.onload= function(){
             jQuery.datetimepicker.setLocale('en');
             $('.datetimepicker').datetimepicker({
@@ -38,12 +43,8 @@
                 format: 'H:i'
             });
         }
-        /*<![CDATA[*/
-
-        /*]]>*/
-    </script>
-    <script>
-        var date_day;
+        var date_day_start;
+        var date_day_end;
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
 
@@ -52,6 +53,8 @@
                 defaultView: 'dayGridMonth',
                 defaultDate: '2019-08-07',
                 selectable: true,
+                allDay: false,
+                allDayDefault:false,
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -61,10 +64,18 @@
                     $(document).ready(function(){
                         $("#starterModal").modal();
                     })
-                    document.getElementById("inputOvertimeDate").innerHTML = info.startStr;
-                    //document.getElementById("inputOvertimeDate2").value = info.startStr;
-                    date_day = info.startStr;
-                    //document.getElementById("inputUserId").value = idEmployee;
+                    var arrayDateStart = document.getElementsByClassName("inputDateStart");
+                    var arrayDateEnd = document.getElementsByClassName("inputDateEnd");
+                    for(var i=0;i<arrayDateStart.length;i++)
+                    {
+                        arrayDateStart[i].innerHTML = info.startStr;
+                    }
+                    for(var i=0;i<arrayDateEnd.length;i++)
+                    {
+                        arrayDateEnd[i].innerHTML = info.endStr;
+                    }
+                    date_day_start = info.startStr;
+                    date_day_end = info.endStr;
 
                 },
             });
@@ -77,10 +88,35 @@
             var scope = angular.element(document.getElementById("addOvertimeModal")).scope();
             scope.addOvertime(day,start,end,id);
         }
+        function javaScriptCallAddUsedOvertime(day,id)
+        {
+            var start = document.getElementById("datetimepicker3").value;
+            var end = document.getElementById("datetimepicker4").value;
+            var scope = angular.element(document.getElementById("addUsedOvertimeModal")).scope();
+            scope.addUsedOvertime(day,start,end,id);
+        }
+        function javaScriptCallAddUsedOvertime(day_start,day_end,id)
+        {
+            var scope = angular.element(document.getElementById("addUsedOvertimeModal")).scope();
+            scope.addHoliday(day_start,day_end,id);
+        }
+
     </script>
     <script src="app.js"></script>
 </head>
-<body>
+<body ng-app="app">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item ">
+                <a class="nav-link" href="/adminView">Administration panel</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/perform_logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 <div id="calendar"></div>
 
 <div class="modal" id="starterModal">
@@ -98,19 +134,19 @@
                 <div class="row">
                     <div class="col text-center">
                         <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addOvertimeModal" >Add Overtime</button>
-                        <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addUseOvertimeModal">Use Overtime</button>
-                        <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addHoliday">Ask for Holiday</button>
+                        <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addUsedOvertimeModal">Use Overtime</button>
+                        <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#addHoliday">Request for vacation</button>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal" id="addOvertimeModal" ng-controller="OvertimeCRUDCtrl" ng-app="app">
+<div class="modal" id="addOvertimeModal" ng-controller="OvertimeCRUDCtrl">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -124,7 +160,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col text-center">
-                        <p>Picked Date: <div id="inputOvertimeDate"></div></p>
+                        <p>Picked Date: <div class="inputDateStart"></div></p>
                         <form>
 
                             <div class="form-group">
@@ -142,20 +178,22 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" onclick="javaScriptCallAddOvertime(date_day,idEmployee)">Add</button>
+                <p style="color:green">{{message}}</p>
+                <p style="color:red">{{errorMessage}}</p>
+                <button type="submit" class="btn btn-primary" onclick="javaScriptCallAddOvertime(date_day_start,idEmployee)">Add</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#starterModal">Back</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal" id="addUseOvertimeModal">
+<div class="modal" id="addUsedOvertimeModal" ng-controller="UsedOvertimeCRUDCtrl">
     <div class="modal-dialog">
         <div class="modal-content">
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Add Overtime</h4>
+                <h4 class="modal-title">Use Overtime</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
@@ -163,39 +201,37 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col text-center">
-                        <p>Available hours: <p id="availableHours"></p></p>
-                        <form>
+                        <p>Available hours: <div id="availableHours"></div></p>
+                        <form >
                             <div class="form-group">
-                                <label for="inputUseOvertimeDate"></label>
-                                <input type="text" class="form-control" id="inputUseOvertimeDate"  placeholder="Enter overtime date">
+                                <label for="datetimepicker3">Overtime starting hour</label>
+                                <input id="datetimepicker3"  class="form-control datetimepicker" type="text" placeholder="Enter overtime starting hour" ng-model="usedovertime.date_start"/>
                             </div>
                             <div class="form-group">
-                                <label for="inputUseOvertimeStart"></label>
-                                <input type="text" class="form-control" id="inputUseOvertimeStart"  placeholder="Enter overtime starting hour">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputUseOvertimeEnd"></label>
-                                <input type="text" class="form-control" id="inputUseOvertimeEnd"  placeholder="Enter overtime ending hour">
+                                <label for="datetimepicker4">Overtime ending hour</label>
+                                <input id="datetimepicker4"  class="form-control datetimepicker" type="text" placeholder="Enter overtime ending hour" ng-model="usedovertime.date_end"/>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Add</button>
+                <p style="color:green">{{message}}</p>
+                <p style="color:red">{{errorMessage}}</p>
+                <button type="button" class="btn btn-primary" onclick="javaScriptCallAddUsedOvertime(date_day_start,idEmployee)">Add</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#starterModal">Back</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal" id="addHoliday">
+<div class="modal" id="addHoliday" ng-controller="HolidayCRUDCtrl">
     <div class="modal-dialog">
         <div class="modal-content">
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Ask for Holiday</h4>
+                <h4 class="modal-title">Apply for a leave</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
@@ -203,21 +239,17 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col text-center">
-                        <form>
-                            <div class="form-group">
-                                <label for="inputHolidayStart"></label>
-                                <input type="text" class="form-control" id="inputHolidayStart"  placeholder="Enter holiday starting date">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputHolidayEnd"></label>
-                                <input type="text" class="form-control" id="inputHolidayEnd"  placeholder="Enter holiday ending date">
-                            </div>
-                        </form>
+                        <p>Starting date: <b><div class="inputDateStart"></div></b></p>
+                    </div>
+                    <div class="col text-center">
+                        <p>Ending date: <b><div class="inputDateEnd"></div></b></p>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Add</button>
+                <p style="color:green">{{message}}</p>
+                <p style="color:red">{{errorMessage}}</p>
+                <button type="button" class="btn btn-primary" onclick="javaScriptCallAddHoliday(date_day_start,date_day_end,idEmployee)">Apply</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal" data-toggle="modal" data-target="#starterModal">Back</button>
             </div>
         </div>

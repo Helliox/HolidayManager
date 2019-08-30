@@ -4,12 +4,12 @@ var app = angular.module('app',[]);
 
 app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
     function ($scope, EmployeeCRUDService){
-        $scope.getEmployee = function(){
-            var id = $scope.employee.id_employee;
-            EmployeeCRUDService.getEmployee($scope.employee.id_employee)
+        $scope.getEmployee = function(id_employee){
+            //var id = $scope.employee.id_employee;
+            EmployeeCRUDService.getEmployee(id_employee)
                 .then(function success(response){
                         $scope.employee = response.data;
-                        $scope.employee.id_employee = id;
+                        //$scope.employee.id_employee = id;
                         $scope.message='';
                         $scope.errorMessage = '';
                     },
@@ -23,7 +23,7 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
                         }
                     });
         };
-       $scope.getEmployeeId = function(id){
+        $scope.getEmployeeId = function(id){
             return getIndex(32,id);
         };
         $scope.addEmployee = function() {
@@ -84,11 +84,30 @@ app.controller('EmployeeCRUDCtrl',['$scope','EmployeeCRUDService',
                      //   $scope.errorMessage = 'Error getting employees!';
                     });
         }
-        $scope.getManagerText = function(id){
-            if(id==1)
-                return "Yes"
-            else
-                return "No"
+        $scope.getOvertimeOfEmployee = function(id){
+            EmployeeCRUDService.getOvertimeOfEmployee(id)
+                .then(function success(response){
+                    $scope.overtimes = response.data._embedded.overtimes;
+                    console.log("success");
+                },
+                    function errorMessage(response){
+                        console.log("error")
+                    });
+        }
+        //FUNKCJA NIETESTOWANA
+        $scope.calculateAvailableHours = function(overtimes)
+        {
+            var total = 0;
+            for(var i=0;i<overtimes.size();i++)
+            {
+                var start = overtimes.get(i).date_start;
+                var end = overtimes.get(i).date_end;
+                var startSplit = start.split(':');
+                var endSplit = end.split(':');
+                var avHours = endSplit[0] - startSplit[0];
+                total += avHours;
+            }
+            console.log(total);
         }
 
     }]);
@@ -138,9 +157,16 @@ app.service('EmployeeCRUDService',['$http', function($http){
     this.getAllEmployees = function getAllEmployees()
     {
         return $http({
-        method:'GET',
-        url:'employees'
-    });
+            method:'GET',
+            url:'employees'
+        });
+    }
+    this.getOvertimeOfEmployee = function getOvertimeOfEmployee(id)
+    {
+        return $http({
+            method:'GET',
+            url:'employees/' + id + '/overtime'
+        });
     }
 }]);
 
@@ -386,7 +412,7 @@ app.service('OvertimeCRUDService',['$http',function($http){
 app.controller('UsedOvertimeCRUDCtrl',['$scope','UsedOvertimeCRUDService',
     function ($scope, UsedOvertimeCRUDService){
         $scope.getUsedOvertime = function(){
-            var id = $scope.overtime.id_overtime;
+            var id = $scope.overtime.id_usedovertime;
             UsedOvertimeCRUDService.getUsedOvertime($scope.usedovertime.id_usedovertime)
                 .then(function success(response){
                         $scope.usedovertime = response.data;
@@ -404,16 +430,20 @@ app.controller('UsedOvertimeCRUDCtrl',['$scope','UsedOvertimeCRUDService',
                         }
                     });
         }
-        $scope.addUsedOvertime = function() {
-            if ($scope.usedovertime != null && $scope.usedovertime.date_start && $scope.usedovertime.date_end && $scope.usedovertime.id_employee)
+        $scope.addUsedOvertime = function(day,start,end,id) {
+            $scope.usedovertime.date_day = day;
+            $scope.usedovertime.date_start = start;
+            $scope.usedovertime.date_end = end;
+            $scope.usedovertime.id_employee = id;
+            if ($scope.usedovertime != null && $scope.usedovertime.date_start && $scope.usedovertime.date_end)
             {
-                UsedOvertimeCRUDService.addOvertime($scope.usedovertime.date_start,$scope.usedovertime.date_end,$scope.usedovertime.id_employee)
+                UsedOvertimeCRUDService.addUsedOvertime($scope.usedovertime.date_day,$scope.usedovertime.date_start,$scope.usedovertime.date_end,$scope.usedovertime.id_employee)
                     .then (function success(response){
-                            $scope.message = 'Overtime added!';
+                            $scope.message = 'Overtime used!';
                             $scope.errorMessage = '';
                         },
                         function error(response){
-                            $scope.errorMessage = 'Error adding Overtime!';
+                            $scope.errorMessage = 'Error using Overtime!';
                             $scope.message = '';
                         });
             }
@@ -452,16 +482,17 @@ app.service('UsedOvertimeCRUDService',['$http',function($http){
     this.getUsedOvertime = function getUsedOvertime(usedOvertimeId){
         return $http({
             method: 'GET',
-            url: 'usedovertimes/' + usedOvertimeId
+            url: 'usedOvertimes/' + usedOvertimeId
         });
     }
-    this.addUsedOvertime = function addUsedOvertime(date_start,date_end,id_employee)
+    this.addUsedOvertime = function addUsedOvertime(date_day,date_start,date_end,id_employee)
     {
         return $http({
             method:'POST',
-            url:'usedovertimes',
+            url:'usedOvertimes',
             data:
                 {
+                    date_day:date_day,
                     date_start:date_start,
                     date_end:date_end,
                     id_employee:id_employee
@@ -472,7 +503,7 @@ app.service('UsedOvertimeCRUDService',['$http',function($http){
     {
         return $http({
             method: 'PATCH',
-            url:'usedovertimes/' + id,
+            url:'usedOvertimes/' + id,
             data:
                 {
                     date_start:date_start,
@@ -485,7 +516,7 @@ app.service('UsedOvertimeCRUDService',['$http',function($http){
     {
         return $http({
             method: 'DELETE',
-            url: 'usedovertimes/' + id
+            url: 'usedOvertimes/' + id
         });
     }
 }]);
